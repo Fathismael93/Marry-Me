@@ -37,8 +37,6 @@ public class InterestedForActivity extends BaseActivity {
     }
 
     private void saveData() {
-        boolean relationChoice = relationCheckbox.isChecked();
-        boolean mariageChoice = mariageCheckbox.isChecked();
 
         Map choiceMap = new HashMap();
         choiceMap.put("relation", relationCheckbox.isChecked());
