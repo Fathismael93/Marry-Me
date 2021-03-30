@@ -1,8 +1,11 @@
 package com.benew.marryme.Controllers.Activities;
 
+import android.content.Intent;
+
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.Modals.User;
 import com.benew.marryme.R;
+import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -41,7 +44,6 @@ public class MainActivity extends BaseActivity {
     protected void configuration() {
         //mAuth = FirebaseAuth.getInstance();
 
-        noNumber = "Veuillez renseigner votre numéro de téléphone !";
         falseNumber = "Ce numéro est incorrect !";
         absencePass = "Le mot de passe est obligatoire !";
         moinsQue5 = "Le mot de passe doit être supérieur à 5 caractères !";
@@ -58,8 +60,8 @@ public class MainActivity extends BaseActivity {
 
         toast.show();
 
-        numberUser = numberUserInput.getEditText().getText().toString();
-        passwordUser = passwordUserInput.getEditText().getText().toString();
+        numberUser = numberUserInput.getEditText().getText().toString().trim();
+        passwordUser = passwordUserInput.getEditText().getText().toString().trim();
 
         getUserDocumentReference(numberUser).get().addOnCompleteListener(task -> {
             DocumentSnapshot documentSnapshot = task.getResult();
@@ -70,9 +72,11 @@ public class MainActivity extends BaseActivity {
 
                 BCrypt.Result result = BCrypt.verifyer().verify(passwordUser.toCharArray(), user.getPassword());
 
-                if (result.verified)
+                if (result.verified) {
                     Toasty.info(MainActivity.this, "Connecté !").show();
-                else
+                    Prevalent.currentUserOnline = user;
+                    startActivity(new Intent(MainActivity.this, InfoGeneralActivity.class));
+                } else
                     Toasty.info(MainActivity.this, "Mot de passe incorrecte !").show();
 
                 toast.hide();
@@ -83,7 +87,10 @@ public class MainActivity extends BaseActivity {
                 newUserMap.put("phone", numberUser);
                 newUserMap.put("password",passwordHashed);
 
-                getUserDocumentReference(numberUser).set(newUserMap).addOnSuccessListener(aVoid -> toast.hide());
+                getUserDocumentReference(numberUser).set(newUserMap).addOnSuccessListener(aVoid -> {
+                    Prevalent.currentUserOnline = new User(numberUser, passwordHashed);
+                    toast.hide();
+                });
             }
         });
 

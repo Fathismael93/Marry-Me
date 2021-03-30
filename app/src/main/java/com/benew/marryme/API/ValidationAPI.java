@@ -8,6 +8,19 @@ import java.util.Objects;
 
 public class ValidationAPI {
 
+    public static boolean validateString(TextInputLayout inputLayout, String id) {
+        String name = Objects.requireNonNull(inputLayout.getEditText()).getText().toString().trim();
+
+        if (name.isEmpty()) {
+            inputLayout.setError(id);
+            inputLayout.requestFocus();
+            return false;
+        } else {
+            inputLayout.setError(null);
+            return true;
+        }
+    }
+
     public static boolean validateNumber(TextInputLayout inputLayout, String noNumber, String falseNumber) {
         String number = Objects.requireNonNull(inputLayout.getEditText()).getText().toString().trim();
 
