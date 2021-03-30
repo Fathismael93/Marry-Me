@@ -21,6 +21,10 @@ import es.dmoral.toasty.Toasty;
 
 import static com.benew.marryme.API.ValidationAPI.validateString;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
+import static com.benew.marryme.UTILS.Constants.BIRTHDAY_FORMAT;
+import static com.benew.marryme.UTILS.Constants.COUNTRY_PICKER_DIALOG_TITLE;
+import static com.benew.marryme.UTILS.Constants.FEMALE_GENDER;
+import static com.benew.marryme.UTILS.Constants.MALE_GENDER;
 
 public class InfoGeneralActivity extends BaseActivity{
 
@@ -56,7 +60,7 @@ public class InfoGeneralActivity extends BaseActivity{
         birthdayUserInput.getEditText().setOnClickListener(v -> new DatePickerDialog(InfoGeneralActivity.this, date,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
 
-        picker = CountryPicker.newInstance("Choisissez un pays");  // dialog title
+        picker = CountryPicker.newInstance(COUNTRY_PICKER_DIALOG_TITLE);  // dialog title
         picker.setListener((name, code, dialCode, flagDrawableResID) -> {
             countryUserInput.getEditText().setText(name);
             picker.dismiss();
@@ -77,10 +81,10 @@ public class InfoGeneralActivity extends BaseActivity{
         else {
             switch (genderRadioGroup.getCheckedRadioButtonId()) {
                 case R.id.male_group:
-                    gender = "male";
+                    gender = MALE_GENDER;
                     break;
                 case R.id.female_group:
-                    gender = "female";
+                    gender = FEMALE_GENDER;
                     break;
             }
             saveDataInfoDatabase();
@@ -88,8 +92,7 @@ public class InfoGeneralActivity extends BaseActivity{
     }
 
     private void updateLabel() {
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.FRANCE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(BIRTHDAY_FORMAT, Locale.FRANCE);
         birthdayUserInput.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
     }
 

@@ -22,6 +22,11 @@ import es.dmoral.toasty.Toasty;
 import static com.benew.marryme.API.ValidationAPI.validateNumber;
 import static com.benew.marryme.API.ValidationAPI.validatePassword;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
+import static com.benew.marryme.UTILS.Constants.FALSE_NUMBER_ERROR;
+import static com.benew.marryme.UTILS.Constants.NO_NUMBER_ERROR;
+import static com.benew.marryme.UTILS.Constants.NO_PASSWORD_ERROR;
+import static com.benew.marryme.UTILS.Constants.PASS_LESS_THAN_5_ERROR;
+import static com.benew.marryme.UTILS.Constants.WRONG_PASSWORD;
 
 public class MainActivity extends BaseActivity {
 
@@ -35,18 +40,12 @@ public class MainActivity extends BaseActivity {
 
     String numberUser, passwordUser /*, verificationCodeBySystem*/;
 
-    String noNumber, falseNumber, absencePass, moinsQue5;
-
     @Override
     protected int getLayout() { return R.layout.activity_main; }
 
     @Override
     protected void configuration() {
         //mAuth = FirebaseAuth.getInstance();
-
-        falseNumber = "Ce numéro est incorrect !";
-        absencePass = "Le mot de passe est obligatoire !";
-        moinsQue5 = "Le mot de passe doit être supérieur à 5 caractères !";
     }
 
     @OnClick(R.id.login_button)
@@ -55,7 +54,7 @@ public class MainActivity extends BaseActivity {
         toast.setBackgroundColor(getResources().getColor(R.color.black));
         toast.setTranslationY(450);
 
-        if (!validateNumber(numberUserInput, noNumber, falseNumber) | !validatePassword(passwordUserInput, absencePass, moinsQue5))
+        if (!validateNumber(numberUserInput, NO_NUMBER_ERROR, FALSE_NUMBER_ERROR) | !validatePassword(passwordUserInput, NO_PASSWORD_ERROR, PASS_LESS_THAN_5_ERROR))
             return;
 
         toast.show();
@@ -73,11 +72,10 @@ public class MainActivity extends BaseActivity {
                 BCrypt.Result result = BCrypt.verifyer().verify(passwordUser.toCharArray(), user.getPassword());
 
                 if (result.verified) {
-                    Toasty.info(MainActivity.this, "Connecté !").show();
                     Prevalent.currentUserOnline = user;
                     startActivity(new Intent(MainActivity.this, InfoGeneralActivity.class));
                 } else
-                    Toasty.info(MainActivity.this, "Mot de passe incorrecte !").show();
+                    Toasty.info(MainActivity.this, WRONG_PASSWORD).show();
 
                 toast.hide();
             } else {
