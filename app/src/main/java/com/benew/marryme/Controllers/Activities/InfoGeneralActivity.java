@@ -1,6 +1,7 @@
 package com.benew.marryme.Controllers.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.widget.RadioGroup;
 
 import com.benew.marryme.Bases.BaseActivity;
@@ -117,6 +118,9 @@ public class InfoGeneralActivity extends BaseActivity{
         infoGeneralMap.put("birthplace", birthplaceUser);
         infoGeneralMap.put("gender", gender);
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(infoGeneralMap);
+        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(infoGeneralMap).addOnSuccessListener(o -> {
+            Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
+            startActivity(intent);
+        });
     }
 }
