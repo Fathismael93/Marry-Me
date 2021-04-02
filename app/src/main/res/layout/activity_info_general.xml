@@ -87,7 +87,7 @@
             app:boxCornerRadiusTopStart="7dp"
             app:boxStrokeColor="@android:color/holo_purple"
             app:hintTextColor="@android:color/holo_purple"
-            app:endIconDrawable="@drawable/ic_calendar"
+            app:startIconDrawable="@drawable/ic_calendar"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText

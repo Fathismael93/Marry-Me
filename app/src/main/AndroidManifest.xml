@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MarryMe">
-        <activity android:name=".Controllers.Activities.InterestedForActivity"></activity>
+        <activity android:name=".Controllers.Activities.MaritalStatusActivity"></activity>
+        <activity android:name=".Controllers.Activities.InterestedForActivity" />
         <activity android:name=".Controllers.Activities.InfoGeneralActivity" />
         <activity android:name=".Controllers.Activities.MainActivity">
             <intent-filter>

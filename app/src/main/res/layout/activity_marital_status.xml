@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Controllers.Activities.MaritalStatusActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/work_question_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Est-ce que vous travaillez ?"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <RadioGroup
+            android:id="@+id/work_answer_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/work_question_textView"
+            android:layout_marginTop="11dp"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/yes_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oui"
+                android:textSize="13sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/purple_500"/>
+
+            <RadioButton
+                android:id="@+id/no_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Non"
+                android:textSize="13sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/purple_500"/>
+
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/marital_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/work_answer_group"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="30dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:boxCornerRadiusTopStart="7dp"
+            app:endIconMode="dropdown_menu"
+            app:boxStrokeColor="@color/purple_200"
+            app:hintTextColor="@color/purple_200"
+            app:errorEnabled="true">
+
+            <AutoCompleteTextView
+                android:id="@+id/dropdown_marital_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Vous êtes dans quelle situation ?"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mariages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/marital_status"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="30dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="7dp"
+            app:endIconMode="clear_text"
+            app:boxStrokeColor="@android:color/holo_purple"
+            app:hintTextColor="@android:color/holo_purple"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Combien de fois vous-êtes vous marié(e) ?"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/childrens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mariages"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="30dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="7dp"
+            app:endIconMode="clear_text"
+            app:boxStrokeColor="@android:color/holo_purple"
+            app:hintTextColor="@android:color/holo_purple"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Combien d'enfants avez-vous ?"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/childrens"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="40dp"
+            android:text="Suivant"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/ignorer_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/childrens"
+            android:text="Ignorer"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="49dp"
+            android:textColor="@color/purple_200"
+            android:textSize="13sp"
+            android:textStyle="italic"/>
+
+    </RelativeLayout>
+
+</ScrollView>

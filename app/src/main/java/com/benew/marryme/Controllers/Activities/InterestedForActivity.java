@@ -1,5 +1,6 @@
 package com.benew.marryme.Controllers.Activities;
 
+import android.content.Intent;
 import android.widget.CheckBox;
 
 import com.benew.marryme.Bases.BaseActivity;
@@ -42,6 +43,9 @@ public class InterestedForActivity extends BaseActivity {
         choiceMap.put("relation", relationCheckbox.isChecked());
         choiceMap.put("mariage", mariageCheckbox.isChecked());
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(choiceMap);
+        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(choiceMap).addOnSuccessListener(o -> {
+            Intent intent = new Intent(InterestedForActivity.this, MaritalStatusActivity.class);
+            startActivity(intent);
+        });
     }
 }
