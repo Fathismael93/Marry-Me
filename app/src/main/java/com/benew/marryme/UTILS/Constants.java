@@ -2,6 +2,9 @@ package com.benew.marryme.UTILS;
 
 public class Constants {
 
+    public static final int RC_IMAGE_PERMS = 100;
+    public static final int RC_CHOOSE_PHOTO = 200;
+
     // FOR USERS'S COLLECTION NAME
     public static final String USERS_COLLECTION = "USERS";
 

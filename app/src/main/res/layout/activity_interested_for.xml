@@ -44,12 +44,36 @@
             android:textSize="20sp"
             android:buttonTint="@color/purple_200"/>
 
+        <TextView
+            android:id="@+id/add_picture_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mariage_checkbox"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:text="Cliquer ici pour ajouter une photo"
+            android:textSize="16sp"
+            android:textColor="@color/purple_200"
+            android:clickable="true"
+            android:focusable="true"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/profil_picture_user"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/add_picture_user"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="photo de profil de l'utilisateur"
+            android:background="@drawable/border_imageview"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/to_next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mariage_checkbox"
-            android:layout_marginTop="150dp"
+            android:layout_below="@+id/profil_picture_user"
+            android:layout_marginTop="100dp"
             android:text="Suivant"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"/>

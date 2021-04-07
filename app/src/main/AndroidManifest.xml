@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.benew.marryme">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MarryMe">
-        <activity android:name=".Controllers.Activities.MaritalStatusActivity"></activity>
+        <activity android:name=".Controllers.Activities.MaritalStatusActivity" />
         <activity android:name=".Controllers.Activities.InterestedForActivity" />
         <activity android:name=".Controllers.Activities.InfoGeneralActivity" />
         <activity android:name=".Controllers.Activities.MainActivity">
