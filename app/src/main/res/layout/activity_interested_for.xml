@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,45 +11,23 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/title_choice"
+            android:id="@+id/title_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Que désirez-vous ?"
-            android:textSize="30sp"
+            android:text="Mettez votre plus belle photo"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:textStyle="italic"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="80dp"/>
 
-        <CheckBox
-            android:id="@+id/relation_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_choice"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="50dp"
-            android:text="Une relation avant le mariage"
-            android:textSize="20sp"
-            android:buttonTint="@color/purple_200"/>
-
-        <CheckBox
-            android:id="@+id/mariage_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relation_checkbox"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:text="Mariage directement"
-            android:textSize="20sp"
-            android:buttonTint="@color/purple_200"/>
-
         <TextView
             android:id="@+id/add_picture_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mariage_checkbox"
+            android:layout_below="@+id/title_picture"
             android:gravity="center_horizontal"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="160dp"
             android:text="Cliquer ici pour ajouter une photo"
             android:textSize="16sp"
             android:textColor="@color/purple_200"

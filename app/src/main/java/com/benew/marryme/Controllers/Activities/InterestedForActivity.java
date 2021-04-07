@@ -1,9 +1,7 @@
 package com.benew.marryme.Controllers.Activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.benew.marryme.Bases.BaseActivity;
@@ -31,10 +29,6 @@ import static com.benew.marryme.UTILS.Constants.RC_IMAGE_PERMS;
 public class InterestedForActivity extends BaseActivity {
 
     // 1 - STATIC DATA FOR PICTURE
-    public static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
-
-    @BindView(R.id.relation_checkbox) CheckBox relationCheckbox;
-    @BindView(R.id.mariage_checkbox) CheckBox mariageCheckbox;
     @BindView(R.id.profil_picture_user) ImageView imageView;
 
     // 1 - Uri of image selected by user
@@ -52,7 +46,7 @@ public class InterestedForActivity extends BaseActivity {
     @OnClick(R.id.add_picture_user)
     // 5 - Calling the appropriate method
     @AfterPermissionGranted(RC_IMAGE_PERMS)
-    public void onClickGetPicFromGalery() { Toasty.info(this, "Cliqué").show(); chooseImageFromPhone(this, this, RC_IMAGE_PERMS, RC_CHOOSE_PHOTO); }
+    public void onClickGetPicFromGalery() { chooseImageFromPhone(this, this, RC_IMAGE_PERMS, RC_CHOOSE_PHOTO); }
 
     // TRAITEMENT SI PERMISSION A LA GALERIE ACCORDEE OU PAS
     @Override
@@ -72,18 +66,13 @@ public class InterestedForActivity extends BaseActivity {
 
     @OnClick(R.id.to_next_button)
     void onClickNext() {
-        if (!relationCheckbox.isChecked() && !mariageCheckbox.isChecked())
-            Toasty.info(this, "Vous devez au moins choisir une case").show();
-        else if (uriImageSelected == null) Toasty.info(this, "Vous devez obligatoirement mettre une photo !").show();
-        else
-            saveData();
+        if (uriImageSelected == null) Toasty.info(this, "Vous devez obligatoirement mettre une photo !").show();
+        else saveData();
     }
 
     private void saveData() {
 
         Map choiceMap = new HashMap();
-        choiceMap.put("relation", relationCheckbox.isChecked());
-        choiceMap.put("mariage", mariageCheckbox.isChecked());
 
         StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getPhone()).child("profile_picture.jpg");
         userProfilePicture.putFile(uriImageSelected).addOnSuccessListener(this, taskSnapshot -> {
