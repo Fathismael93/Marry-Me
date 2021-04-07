@@ -1,5 +1,6 @@
 package com.benew.marryme.Controllers.Activities;
 
+import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
@@ -85,6 +86,9 @@ public class MaritalStatusActivity extends BaseActivity {
         actualPersonalStatusMap.put("mariages", mariages);
         actualPersonalStatusMap.put("childrens", childrens);
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(actualPersonalStatusMap);
+        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
+            Intent intent = new Intent(MaritalStatusActivity.this, NoyauActivity.class);
+            startActivity(intent);
+        });;
     }
 }
