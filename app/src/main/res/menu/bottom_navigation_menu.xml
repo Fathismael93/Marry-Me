@@ -10,8 +10,8 @@
 
     <item
         android:id="@+id/search"
-        android:title="Chercher"
+        android:title="Profil"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@drawable/ic_search"/>
+        android:icon="@drawable/ic_voir"/>
 </menu>
