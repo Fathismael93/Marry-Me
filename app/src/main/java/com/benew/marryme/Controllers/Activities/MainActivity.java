@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
 
                 if (result.verified) {
                     Prevalent.currentUserOnline = user;
-                    startActivity(new Intent(MainActivity.this, InfoGeneralActivity.class));
+                    startActivity(new Intent(MainActivity.this, NoyauActivity.class));
                 } else
                     Toasty.info(MainActivity.this, WRONG_PASSWORD).show();
 
@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity {
 
                 getUserDocumentReference(numberUser).set(newUserMap).addOnSuccessListener(aVoid -> {
                     Prevalent.currentUserOnline = new User(numberUser, passwordHashed);
+                    startActivity(new Intent(MainActivity.this, InfoGeneralActivity.class));
                     toast.hide();
                 });
             }
