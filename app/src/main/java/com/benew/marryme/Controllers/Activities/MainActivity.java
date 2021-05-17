@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
 
-            //verificationCodeBySystem = s;
+            verificationCodeBySystem = s;
         }
 
         @Override
@@ -128,6 +128,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
             Toasty.error(MainActivity.this, e.getMessage(), Toasty.LENGTH_LONG).show();
+            Log.i("NUMBER", "signInTheUserByCredentials: " + e.getMessage());
         }
     };
 
