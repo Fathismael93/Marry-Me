@@ -48,7 +48,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
 
     //FIREBASE
-    implementation 'com.google.firebase:firebase-core:18.0.2'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
     //FIREBASE FIRESTORE
     implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
     //FIREBASE STORAGE
@@ -56,11 +56,14 @@ dependencies {
     //FIREBASE AUTHENTICATION
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
     //GOOGLE ANALYTICS
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
     //CRASHLYTICS
-    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.0.0'
     //
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
+
+    //FACEBOOK
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
 
     //MULTIDEX
     implementation 'com.android.support:multidex:1.0.3'
@@ -69,7 +72,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
 
     //RECYCLERVIEW
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
 
     //PAPER
     implementation 'io.paperdb:paperdb:2.7.1'

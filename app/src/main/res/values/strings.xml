@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Marry Me</string>
 
+    <!-- FOR FACEBOOK -->
+    <string name="facebook_application_id">187232826594313</string>
+    <string name="fb_login_protocol_scheme">fb187232826594313</string>
+
+
     <!-- ACTIVITY MAIN LAYOUT -->
     <string name="text_input_hint_numero_nouvel_utilisateur">Numéro de télephone</string>
     <string name="text_input_hint_mot_de_passe_nouvel_utilisateur">Mot de passe</string>
     <string name="boutton_inscription_nouvel_utilisateur">Connexion</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="boutton_inscription_mail">Connexion avec un mail</string>
+    <string name="boutton_inscription_facebook">Connexion avec un compte facebook</string>
 </resources>
