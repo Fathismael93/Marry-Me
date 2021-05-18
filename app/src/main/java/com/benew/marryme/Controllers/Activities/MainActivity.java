@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
                                 Arrays.asList(new AuthUI.IdpConfig.FacebookBuilder().build()))
                         .setIsSmartLockEnabled(false, true)
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
                                 Arrays.asList(new AuthUI.IdpConfig.GoogleBuilder().build()))
                         .setIsSmartLockEnabled(false, true)
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
                                 Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build()))
                         .setIsSmartLockEnabled(false, true)

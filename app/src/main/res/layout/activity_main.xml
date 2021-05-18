@@ -14,34 +14,32 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/login_with_google_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:paddingHorizontal="70dp"
-            android:paddingVertical="10dp"
+            android:layout_marginHorizontal="30dp"
             android:layout_centerHorizontal="true" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_with_facebook_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="30dp"
             android:layout_below="@+id/login_with_google_button"
-            android:layout_marginBottom="30dp"
-            android:paddingHorizontal="50dp"
-            android:paddingVertical="10dp"
             android:layout_centerHorizontal="true"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_with_mail_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_with_facebook_button"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/boutton_inscription_mail"
             android:textColor="@color/white"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:textAllCaps="false"/>
 
     </RelativeLayout>
 
