@@ -1,8 +1,12 @@
 package com.benew.marryme.Controllers.Activities;
 
+import android.content.Intent;
+
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
 
 import java.util.Arrays;
 
@@ -34,6 +38,13 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.login_with_mail_button)
     void onClickLoginWithMail() {
         this.startSignInWithMail();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // 4 - Handle SignIn Activity response on activity result
+        this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
     private void startSignInActivity(){
@@ -70,5 +81,25 @@ public class MainActivity extends BaseActivity {
                         .setIsSmartLockEnabled(false, true)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    // 3 - Method that handles response after SignIn Activity close
+    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
+
+        IdpResponse response = IdpResponse.fromResultIntent(data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) { // SUCCESS
+
+            } else { // ERRORS
+                if (response == null) {
+
+                } else if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+
+                } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+
+                }
+            }
+        }
     }
 }
