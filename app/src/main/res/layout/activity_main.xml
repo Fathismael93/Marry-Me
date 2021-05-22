@@ -39,7 +39,8 @@
             android:text="@string/boutton_inscription_mail"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_mail"/>
 
     </RelativeLayout>
 

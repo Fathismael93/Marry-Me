@@ -16,8 +16,8 @@ public class FirestoreUsage {
     }
 
     // ONE USER DOCUMENT REFERENCE
-    public static DocumentReference getUserDocumentReference(String userNumber) {
-        return getUsersCollectionReference().document(userNumber);
+    public static DocumentReference getUserDocumentReference(String userMail) {
+        return getUsersCollectionReference().document(userMail);
     }
 
     // ALL USERS STORAGE REFERENCE

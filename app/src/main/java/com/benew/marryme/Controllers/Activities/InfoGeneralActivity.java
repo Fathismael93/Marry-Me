@@ -118,7 +118,7 @@ public class InfoGeneralActivity extends BaseActivity{
         infoGeneralMap.put("birthplace", birthplaceUser);
         infoGeneralMap.put("gender", gender);
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(infoGeneralMap).addOnSuccessListener(o -> {
+        getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(infoGeneralMap).addOnSuccessListener(o -> {
             Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
             startActivity(intent);
         });

@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "323391227204",
-    "project_id": "marry-me-7e659",
-    "storage_bucket": "marry-me-7e659.appspot.com"
+    "project_number": "655712159943",
+    "project_id": "marryme-314303",
+    "storage_bucket": "marryme-314303.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:323391227204:android:6f190ba25c643f753ac311",
+        "mobilesdk_app_id": "1:655712159943:android:3464cc70d45527bf9e96e2",
         "android_client_info": {
           "package_name": "com.benew.marryme"
         }
       },
       "oauth_client": [
         {
-          "client_id": "323391227204-l6etnueic67vsmr8toh2irdie0jlj2k2.apps.googleusercontent.com",
+          "client_id": "655712159943-jkhkamkvgd1jml8uvsqq6op4ksbkcvqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.benew.marryme",
+            "certificate_hash": "84af176ef47cfd6b74b3043ff3923d3dbad6ee10"
+          }
+        },
+        {
+          "client_id": "655712159943-ihe9mkv4i5b67v6ckkkjk8cd9qheb2ti.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDMjHcZIjra_xrNqOvOFdq1fk10SmTcWEM"
+          "current_key": "AIzaSyCTEP2i3RrAEXWf7kMramlbdI-4z49tU8o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "323391227204-l6etnueic67vsmr8toh2irdie0jlj2k2.apps.googleusercontent.com",
+              "client_id": "655712159943-ihe9mkv4i5b67v6ckkkjk8cd9qheb2ti.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

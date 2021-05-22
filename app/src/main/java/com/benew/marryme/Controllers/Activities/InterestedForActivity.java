@@ -74,13 +74,13 @@ public class InterestedForActivity extends BaseActivity {
 
         Map choiceMap = new HashMap();
 
-        StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getPhone()).child("profile_picture.jpg");
+        StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getMail()).child("profile_picture.jpg");
         userProfilePicture.putFile(uriImageSelected).addOnSuccessListener(this, taskSnapshot -> {
                     String pathImageSavedInFirebaseStorage = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
 
                     choiceMap.put("profile_picture", pathImageSavedInFirebaseStorage);
 
-                    getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(choiceMap).addOnSuccessListener(o -> {
+                    getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(choiceMap).addOnSuccessListener(o -> {
                         Intent intent = new Intent(InterestedForActivity.this, MaritalStatusActivity.class);
                         startActivity(intent);
                     });

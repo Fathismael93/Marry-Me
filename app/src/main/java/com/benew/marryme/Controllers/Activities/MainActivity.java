@@ -7,10 +7,17 @@ import com.benew.marryme.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
+
+import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
 
 public class MainActivity extends BaseActivity {
 
@@ -22,7 +29,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void configuration() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
+        if (user != null) {
+            Intent intent = new Intent(MainActivity.this, NoyauActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @OnClick(R.id.login_with_google_button)
@@ -91,13 +105,31 @@ public class MainActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
 
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                if (response.isNewUser()) {
+                    Map newUser = new HashMap();
+                    newUser.put("name", user.getDisplayName());
+                    newUser.put("mail", user.getEmail());
+
+                    getUserDocumentReference(user.getEmail()).set(newUser);
+
+                    Intent intent = new Intent(MainActivity.this, InfoGeneralActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, NoyauActivity.class);
+                    startActivity(intent);
+                }
+                finish();
+
             } else { // ERRORS
                 if (response == null) {
-
+                    Toasty.info(this, "Connexion annulée").show();
                 } else if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-
+                    Toasty.info(this, "Vous n'avez pas de connexion internet").show();
                 } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-
+                    Toasty.info(this, "Une erreur inconnue est survenue! Veuillez réessayer plutard").show();
                 }
             }
         }

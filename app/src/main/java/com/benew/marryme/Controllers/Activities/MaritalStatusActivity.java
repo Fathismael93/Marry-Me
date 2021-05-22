@@ -86,7 +86,7 @@ public class MaritalStatusActivity extends BaseActivity {
         actualPersonalStatusMap.put("mariages", mariages);
         actualPersonalStatusMap.put("childrens", childrens);
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getPhone()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
+        getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
             Intent intent = new Intent(MaritalStatusActivity.this, NoyauActivity.class);
             startActivity(intent);
         });;
