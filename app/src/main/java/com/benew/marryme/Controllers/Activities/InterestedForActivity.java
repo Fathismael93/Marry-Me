@@ -3,8 +3,10 @@ package com.benew.marryme.Controllers.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.FirebaseUsage.FirestoreUsage;
 import com.benew.marryme.R;
@@ -26,6 +28,10 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.benew.marryme.API.GettingPictureAPI.chooseImageFromPhone;
 import static com.benew.marryme.API.GettingPictureAPI.handleResponse;
+import static com.benew.marryme.API.LoadingConfiguration.configureLoading;
+import static com.benew.marryme.API.LoadingConfiguration.startLoading;
+import static com.benew.marryme.API.LoadingConfiguration.stopLoading;
+import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getFemaleUserDocumentReference;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getMaleUserDocumentReference;
 import static com.benew.marryme.UTILS.Constants.FEMALE_GENDER;
@@ -38,6 +44,7 @@ import static com.benew.marryme.UTILS.Constants.RC_IMAGE_PERMS;
 public class InterestedForActivity extends BaseActivity {
 
     // 1 - STATIC DATA FOR PICTURE
+    @BindView(R.id.rootView) RelativeLayout rootView;
     @BindView(R.id.profil_picture_user) ImageView imageView;
     @BindView(R.id.add_picture_user) TextView newPicture;
 
@@ -46,6 +53,8 @@ public class InterestedForActivity extends BaseActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser user;
+
+    TashieLoader tashie;
 
     @Override
     protected int getLayout() { return R.layout.activity_interested_for; }
@@ -65,6 +74,8 @@ public class InterestedForActivity extends BaseActivity {
 
             newPicture.setText("Cliquer ici pour modifier votre photo");
         }
+
+        tashie = configureLoading(InterestedForActivity.this);
     }
 
     //EN CLIQUANT SUR IMPORTER PHOTO, VERIFICATION SI PERMISSION D'ACCEDER A LA GALERIE ET PUIS DIRECTION VERS LA GALERIE POUR RECUP UNE PHOTO
@@ -92,7 +103,9 @@ public class InterestedForActivity extends BaseActivity {
     @OnClick(R.id.to_next_button)
     void onClickNext() {
         if (uriImageSelected == null) Toasty.info(this, "Vous devez obligatoirement mettre une photo !").show();
-        else saveData();
+        else {
+            startLoading(rootView, tashie);
+            saveData(); }
     }
 
     private void saveData() {
@@ -119,22 +132,15 @@ public class InterestedForActivity extends BaseActivity {
 
                 switch (Prevalent.currentUserOnline.getGender()) {
                     case MALE_GENDER:
-                        getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(choiceMap).addOnSuccessListener(o -> {
-                            Intent intent = new Intent(InterestedForActivity.this, MaritalStatusActivity.class);
-                            startActivity(intent);
-                        });
+                        getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(choiceMap).addOnSuccessListener(o -> startNewActivity(InterestedForActivity.this, MaritalStatusActivity.class));
                         break;
                     case FEMALE_GENDER:
-                        getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(choiceMap).addOnSuccessListener(o -> {
-                            Intent intent = new Intent(InterestedForActivity.this, MaritalStatusActivity.class);
-                            startActivity(intent);
-                        });
+                        getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(choiceMap).addOnSuccessListener(o -> startNewActivity(InterestedForActivity.this, MaritalStatusActivity.class));
                         break;
                 }
             });
-        } else {
-            Intent intent = new Intent(InterestedForActivity.this, MaritalStatusActivity.class);
-            startActivity(intent);
-        }
+        } else
+            startNewActivity(InterestedForActivity.this, MaritalStatusActivity.class);
+        stopLoading(rootView, tashie);
     }
 }

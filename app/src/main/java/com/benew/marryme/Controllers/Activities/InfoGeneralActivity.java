@@ -1,9 +1,10 @@
 package com.benew.marryme.Controllers.Activities;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
+import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.Modals.User;
 import com.benew.marryme.R;
@@ -23,6 +24,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
+import static com.benew.marryme.API.LoadingConfiguration.configureLoading;
+import static com.benew.marryme.API.LoadingConfiguration.startLoading;
+import static com.benew.marryme.API.LoadingConfiguration.stopLoading;
+import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 import static com.benew.marryme.API.ValidationAPI.validateString;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getFemaleUserDocumentReference;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getMaleUserDocumentReference;
@@ -38,6 +43,7 @@ public class InfoGeneralActivity extends BaseActivity{
 
     CountryPicker picker;
 
+    @BindView(R.id.rootView) RelativeLayout rootView;
     @BindView(R.id.birthday_user) TextInputLayout birthdayUserInput;
     @BindView(R.id.country_user) TextInputLayout countryUserInput;
     @BindView(R.id.complete_name_user) TextInputLayout nameUserInput;
@@ -50,6 +56,8 @@ public class InfoGeneralActivity extends BaseActivity{
 
     FirebaseAuth mAuth;
     FirebaseUser user;
+
+    TashieLoader tashie;
 
     @Override
     protected int getLayout() { return R.layout.activity_info_general; }
@@ -83,6 +91,8 @@ public class InfoGeneralActivity extends BaseActivity{
 
         nameUserInput.getEditText().setText(user.getDisplayName());
         Prevalent.currentUserOnline.setMail(user.getEmail());
+
+        tashie = configureLoading(InfoGeneralActivity.this);
     }
 
     @OnClick(R.id.to_next_button)
@@ -95,6 +105,8 @@ public class InfoGeneralActivity extends BaseActivity{
         if (genderRadioGroup.getCheckedRadioButtonId() != R.id.male_group && genderRadioGroup.getCheckedRadioButtonId() != R.id.female_group)
             Toasty.info(this, "Quel est votre sexe ?").show();
         else {
+            startLoading(rootView, tashie);
+
             switch (genderRadioGroup.getCheckedRadioButtonId()) {
                 case R.id.male_group:
                     gender = MALE_GENDER;
@@ -144,15 +156,11 @@ public class InfoGeneralActivity extends BaseActivity{
         Prevalent.currentUserOnline.setCountry(countryUser);
 
         if (gender.equals(FEMALE_GENDER)) {
-            getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> {
-                Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
-                startActivity(intent);
-            });
+            getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
         } else {
-            getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> {
-                Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
-                startActivity(intent);
-            });
+            getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
         }
+
+        stopLoading(rootView, tashie);
     }
 }

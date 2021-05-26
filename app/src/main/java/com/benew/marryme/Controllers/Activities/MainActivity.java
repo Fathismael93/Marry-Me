@@ -1,11 +1,7 @@
 package com.benew.marryme.Controllers.Activities;
 
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
-
-import androidx.core.content.ContextCompat;
 
 import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
@@ -21,6 +17,10 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
+
+import static com.benew.marryme.API.LoadingConfiguration.configureLoading;
+import static com.benew.marryme.API.LoadingConfiguration.startLoading;
+import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -39,20 +39,10 @@ public class MainActivity extends BaseActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
-        tashie = new TashieLoader(
-                this, 5,
-                30, 10,
-                ContextCompat.getColor(this, R.color.purple_200));
-
-        tashie.setAnimDuration(500);
-        tashie.setAnimDelay(100);
-        tashie.setInterpolator(new LinearInterpolator());
-        tashie.setY(300f);
-        tashie.setX(180f);
+        tashie = configureLoading(MainActivity.this);
 
         if (user != null) {
-            Intent intent = new Intent(MainActivity.this, NoyauActivity.class);
-            startActivity(intent);
+            startNewActivity(MainActivity.this, NoyauActivity.class);
             finish();
         }
     }
@@ -123,19 +113,14 @@ public class MainActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
 
-                rootView.setAlpha(0.3f);
-                rootView.addView(tashie);
+                startLoading(rootView, tashie);
 
                 if (response.isNewUser()) {
-                    Intent intent = new Intent(MainActivity.this, InfoGeneralActivity.class);
-                    startActivity(intent);
+                    startNewActivity(MainActivity.this, InfoGeneralActivity.class);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, NoyauActivity.class);
-                    startActivity(intent);
+                    startNewActivity(MainActivity.this, NoyauActivity.class);
                 }
                 finish();
-                rootView.setAlpha(1f);
-                rootView.removeView(tashie);
 
             } else { // ERRORS
                 if (response == null) {
