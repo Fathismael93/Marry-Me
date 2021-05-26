@@ -100,4 +100,10 @@ dependencies {
 
     //CODE PICKER
     implementation 'com.github.yesterselga:country-picker-android:1.0'
+
+    //SWIPE CARDS
+    implementation 'com.yuyakaido.android:card-stack-view:2.3.4'
+
+    //DOTS LOADER
+    implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 }

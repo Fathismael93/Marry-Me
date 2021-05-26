@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.widget.RadioGroup;
 
 import com.benew.marryme.Bases.BaseActivity;
+import com.benew.marryme.Modals.User;
 import com.benew.marryme.R;
 import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ybs.countrypicker.CountryPicker;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +24,8 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
 import static com.benew.marryme.API.ValidationAPI.validateString;
-import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
+import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getFemaleUserDocumentReference;
+import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getMaleUserDocumentReference;
 import static com.benew.marryme.UTILS.Constants.BIRTHDAY_FORMAT;
 import static com.benew.marryme.UTILS.Constants.COUNTRY_PICKER_DIALOG_TITLE;
 import static com.benew.marryme.UTILS.Constants.FEMALE_GENDER;
@@ -43,6 +47,9 @@ public class InfoGeneralActivity extends BaseActivity{
     @BindView(R.id.gender_group) RadioGroup genderRadioGroup;
 
     String gender;
+
+    FirebaseAuth mAuth;
+    FirebaseUser user;
 
     @Override
     protected int getLayout() { return R.layout.activity_info_general; }
@@ -68,6 +75,14 @@ public class InfoGeneralActivity extends BaseActivity{
         });
 
         countryUserInput.getEditText().setOnClickListener(v -> openPicker());
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        Prevalent.currentUserOnline = new User();
+
+        nameUserInput.getEditText().setText(user.getDisplayName());
+        Prevalent.currentUserOnline.setMail(user.getEmail());
     }
 
     @OnClick(R.id.to_next_button)
@@ -117,10 +132,27 @@ public class InfoGeneralActivity extends BaseActivity{
         infoGeneralMap.put("country", countryUser);
         infoGeneralMap.put("birthplace", birthplaceUser);
         infoGeneralMap.put("gender", gender);
+        infoGeneralMap.put("mail", user.getEmail());
+        infoGeneralMap.put("userID", user.getUid());
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(infoGeneralMap).addOnSuccessListener(o -> {
-            Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
-            startActivity(intent);
-        });
+        Prevalent.currentUserOnline.setName(nameUser);
+        Prevalent.currentUserOnline.setAdress(adressUser);
+        Prevalent.currentUserOnline.setBirthday(birthdayUser);
+        Prevalent.currentUserOnline.setGender(gender);
+        Prevalent.currentUserOnline.setCity(cityUser);
+        Prevalent.currentUserOnline.setBirthplace(birthplaceUser);
+        Prevalent.currentUserOnline.setCountry(countryUser);
+
+        if (gender.equals(FEMALE_GENDER)) {
+            getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> {
+                Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
+                startActivity(intent);
+            });
+        } else {
+            getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> {
+                Intent intent = new Intent(InfoGeneralActivity.this, InterestedForActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 }

@@ -1,13 +1,11 @@
 package com.benew.marryme.Controllers.Activities;
 
-import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
 
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
-import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -17,8 +15,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
 
 public class MaritalStatusActivity extends BaseActivity {
 
@@ -86,9 +82,9 @@ public class MaritalStatusActivity extends BaseActivity {
         actualPersonalStatusMap.put("mariages", mariages);
         actualPersonalStatusMap.put("childrens", childrens);
 
-        getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
+        /*getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
             Intent intent = new Intent(MaritalStatusActivity.this, NoyauActivity.class);
             startActivity(intent);
-        });;
+        });*/
     }
 }

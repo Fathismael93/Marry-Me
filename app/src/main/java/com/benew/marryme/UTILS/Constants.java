@@ -6,7 +6,8 @@ public class Constants {
     public static final int RC_CHOOSE_PHOTO = 200;
 
     // FOR USERS'S COLLECTION NAME
-    public static final String USERS_COLLECTION = "USERS";
+    public static final String FEMALE_USERS_COLLECTION = "FEMALE_USERS";
+    public static final String MALE_USERS_COLLECTION = "MALE_USERS";
 
     // GENDER
     public static final String MALE_GENDER = "male";

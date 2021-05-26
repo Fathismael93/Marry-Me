@@ -1,7 +1,13 @@
 package com.benew.marryme.Controllers.Activities;
 
 import android.content.Intent;
+import android.view.Gravity;
+import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+
+import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
 import com.firebase.ui.auth.AuthUI;
@@ -11,18 +17,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
-
-import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getUserDocumentReference;
 
 public class MainActivity extends BaseActivity {
 
     // 1 - Identifier for Sign-In Activity
     private static final int RC_SIGN_IN = 123;
+
+    @BindView(R.id.rootView) RelativeLayout rootView;
+
+    TashieLoader tashie;
 
     @Override
     protected int getLayout() { return R.layout.activity_main; }
@@ -31,6 +38,17 @@ public class MainActivity extends BaseActivity {
     protected void configuration() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+
+        tashie = new TashieLoader(
+                this, 5,
+                30, 10,
+                ContextCompat.getColor(this, R.color.purple_200));
+
+        tashie.setAnimDuration(500);
+        tashie.setAnimDelay(100);
+        tashie.setInterpolator(new LinearInterpolator());
+        tashie.setY(300f);
+        tashie.setX(180f);
 
         if (user != null) {
             Intent intent = new Intent(MainActivity.this, NoyauActivity.class);
@@ -105,16 +123,10 @@ public class MainActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
 
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
+                rootView.setAlpha(0.3f);
+                rootView.addView(tashie);
 
                 if (response.isNewUser()) {
-                    Map newUser = new HashMap();
-                    newUser.put("name", user.getDisplayName());
-                    newUser.put("mail", user.getEmail());
-
-                    getUserDocumentReference(user.getEmail()).set(newUser);
-
                     Intent intent = new Intent(MainActivity.this, InfoGeneralActivity.class);
                     startActivity(intent);
                 } else {
@@ -122,6 +134,8 @@ public class MainActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 finish();
+                rootView.setAlpha(1f);
+                rootView.removeView(tashie);
 
             } else { // ERRORS
                 if (response == null) {
