@@ -11,7 +11,6 @@ import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.FirebaseUsage.FirestoreUsage;
 import com.benew.marryme.R;
 import com.benew.marryme.UTILS.Prevalent;
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
@@ -64,17 +63,6 @@ public class InterestedForActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        if (user.getPhotoUrl() != null) {
-            uriImageSelected = user.getPhotoUrl();
-
-            Glide.with(this) //SHOWING PREVIEW OF IMAGE
-                    .load(uriImageSelected)
-                    .into(imageView);
-            imageView.setBackground(null);
-
-            newPicture.setText("Cliquer ici pour modifier votre photo");
-        }
-
         tashie = configureLoading(InterestedForActivity.this);
     }
 
@@ -122,7 +110,6 @@ public class InterestedForActivity extends BaseActivity {
                 break;
         }
 
-        if (!uriImageSelected.equals(user.getPhotoUrl())) {
             StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getMail()).child(gender).child("profile_picture.jpg");
             userProfilePicture.putFile(uriImageSelected).addOnSuccessListener(this, taskSnapshot -> {
                 String pathImageSavedInFirebaseStorage = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
@@ -139,8 +126,6 @@ public class InterestedForActivity extends BaseActivity {
                         break;
                 }
             });
-        } else
-            startNewActivity(InterestedForActivity.this, MaritalStatusActivity.class);
         stopLoading(rootView, tashie);
     }
 }
