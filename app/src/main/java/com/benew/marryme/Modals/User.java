@@ -2,9 +2,49 @@ package com.benew.marryme.Modals;
 
 public class User {
 
-    private String mail, name, adress, city, birthday, country, birthplace, gender, userID, profile_picture;
+    private String mail, name, adress, city, birthday, country, birthplace, gender, userID, profile_picture, work_answer, work_place, bio;
 
     public User() {}
+
+    public User(String mail, String name, String adress, String city, String birthday, String country, String birthplace, String gender, String userID, String profile_picture, String work_answer, String work_place, String bio) {
+        this.mail = mail;
+        this.name = name;
+        this.adress = adress;
+        this.city = city;
+        this.birthday = birthday;
+        this.country = country;
+        this.birthplace = birthplace;
+        this.gender = gender;
+        this.userID = userID;
+        this.profile_picture = profile_picture;
+        this.work_answer = work_answer;
+        this.work_place = work_place;
+        this.bio = bio;
+    }
+
+    public String getWork_answer() {
+        return work_answer;
+    }
+
+    public void setWork_answer(String work_answer) {
+        this.work_answer = work_answer;
+    }
+
+    public String getWork_place() {
+        return work_place;
+    }
+
+    public void setWork_place(String work_place) {
+        this.work_place = work_place;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
     public String getProfile_picture() {
         return profile_picture;

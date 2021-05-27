@@ -51,32 +51,10 @@
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/marital_status"
+            android:id="@+id/work_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/work_answer_group"
-            android:layout_marginTop="30dp"
-            android:layout_marginHorizontal="30dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            app:boxCornerRadiusTopStart="7dp"
-            app:endIconMode="dropdown_menu"
-            app:boxStrokeColor="@color/purple_200"
-            app:hintTextColor="@color/purple_200"
-            app:errorEnabled="true">
-
-            <AutoCompleteTextView
-                android:id="@+id/dropdown_marital_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Vous êtes dans quelle situation ?"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mariages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/marital_status"
+            android:layout_below="@id/work_answer_group"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="30dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -89,18 +67,18 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Combien de fois vous-êtes vous marié(e) ?"
+                android:hint="Où est-ce que vous travaillez ?"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black"
-                android:inputType="number"/>
+                android:inputType="text"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/childrens"
+            android:id="@+id/bio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mariages"
+            android:layout_below="@id/work_place"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="30dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -113,10 +91,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Combien d'enfants avez-vous ?"
+                android:hint="Ecrivez deux ou trois phrases qui vous décrivent"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black"
-                android:inputType="number"/>
+                android:inputType="textMultiLine"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,25 +102,13 @@
             android:id="@+id/to_next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/childrens"
+            android:layout_below="@+id/bio"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
             android:layout_marginTop="40dp"
             android:text="Suivant"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:id="@+id/ignorer_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/childrens"
-            android:text="Ignorer"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="49dp"
-            android:textColor="@color/purple_200"
-            android:textSize="13sp"
-            android:textStyle="italic"/>
 
     </RelativeLayout>
 

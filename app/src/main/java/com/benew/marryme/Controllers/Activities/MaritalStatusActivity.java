@@ -1,53 +1,38 @@
 package com.benew.marryme.Controllers.Activities;
 
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
 
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
+import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
+import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getFemaleUserDocumentReference;
+import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getMaleUserDocumentReference;
+import static com.benew.marryme.UTILS.Constants.FEMALE_GENDER;
+import static com.benew.marryme.UTILS.Constants.MALE_GENDER;
+
 public class MaritalStatusActivity extends BaseActivity {
 
     @BindView(R.id.work_answer_group) RadioGroup workGroup;
-    @BindView(R.id.dropdown_marital_status) AutoCompleteTextView dropdownMaritalStatus;
-    @BindView(R.id.mariages) TextInputLayout mariagesInput;
-    @BindView(R.id.childrens) TextInputLayout childrensInput;
+    @BindView(R.id.work_place) TextInputLayout workPlaceInput;
+    @BindView(R.id.bio) TextInputLayout bioInput;
 
-    private String choosenStatus;
-    List allStatus;
-    //VARIABLE POUR CONFIGURER L'ADAPTER DU DROPDOWN
-    ArrayAdapter<String> adapter;
-
-    String workAnswer = "", mariages = "", childrens = "";
+    String workAnswer = "", workPlace = "", bio = "";
 
     @Override
     protected int getLayout() { return R.layout.activity_marital_status; }
 
     @Override
     protected void configuration() {
-        allStatus = new ArrayList<>();
-        allStatus.add("Célibataire");
-        allStatus.add("Marié(e)");
-        allStatus.add("Divorcé(e)");
 
-        //CONFIGURATION DE L'ADAPTER QUI VA AFFICHER LA LISTE DES DIFFERENTS DESSERTS
-        adapter = new ArrayAdapter<>(this, R.layout.dropdown_marital_status, allStatus);
-        dropdownMaritalStatus.setAdapter(adapter);
-        dropdownMaritalStatus.setOnItemClickListener((parent, view, position, id) -> {
-            Object item = parent.getItemAtPosition(position);
-            //RECUPERATION DE LA CATEGORIE SELECTIONNEE
-            choosenStatus = item.toString();
-        });
     }
 
     @OnClick(R.id.to_next_button)
@@ -62,29 +47,29 @@ public class MaritalStatusActivity extends BaseActivity {
                 break;
         }
 
-        mariages = mariagesInput.getEditText().getText().toString().trim();
-        childrens = childrensInput.getEditText().getText().toString().trim();
+        workPlace = workPlaceInput.getEditText().getText().toString().trim();
+        bio = bioInput.getEditText().getText().toString().trim();
 
-        saveDataOnDatabase(workAnswer, choosenStatus, mariages, childrens);
+        saveDataOnDatabase(workAnswer, workPlace, bio);
     }
 
-    @OnClick(R.id.ignorer_textView)
-    void onClickIgnorer() {
-        choosenStatus = "";
-
-        saveDataOnDatabase(workAnswer, choosenStatus, mariages, childrens);
-    }
-
-    private void saveDataOnDatabase(String workAnswer, String choosenStatus, String mariages, String childrens) {
+    private void saveDataOnDatabase(String workAnswer, String workPlace, String bio) {
         Map actualPersonalStatusMap = new HashMap();
         actualPersonalStatusMap.put("work_answer", workAnswer);
-        actualPersonalStatusMap.put("actual_martital_status", choosenStatus);
-        actualPersonalStatusMap.put("mariages", mariages);
-        actualPersonalStatusMap.put("childrens", childrens);
+        actualPersonalStatusMap.put("work_place", workPlace);
+        actualPersonalStatusMap.put("bio", bio);
 
-        /*getUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> {
-            Intent intent = new Intent(MaritalStatusActivity.this, NoyauActivity.class);
-            startActivity(intent);
-        });*/
+        Prevalent.currentUserOnline.setBio(bio);
+        Prevalent.currentUserOnline.setWork_answer(workAnswer);
+        Prevalent.currentUserOnline.setWork_place(workPlace);
+
+        switch (Prevalent.currentUserOnline.getGender()) {
+            case MALE_GENDER:
+                getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
+                break;
+            case FEMALE_GENDER:
+                getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
+                break;
+        }
     }
 }
