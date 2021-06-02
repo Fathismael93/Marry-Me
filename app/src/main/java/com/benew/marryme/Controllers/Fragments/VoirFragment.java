@@ -73,17 +73,8 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
     }
 
     private void setupButton() {
-        skip.setOnClickListener(v -> {
-            SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
-                    .setDirection(Direction.Left)
-                    .setDuration(Duration.Normal.duration)
-                    .setInterpolator(new AccelerateInterpolator())
-                    .build();
-
-            manager.setSwipeAnimationSetting(setting);
-            cardStackView.swipe();
-        });
-
+        skip.setOnClickListener(v -> swipeConfiguration(Direction.Left));
+        like.setOnClickListener(v -> swipeConfiguration(Direction.Right));
 
         rewind.setOnClickListener(v -> {
             RewindAnimationSetting setting = new RewindAnimationSetting.Builder()
@@ -96,17 +87,6 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
             cardStackView.rewind();
         });
 
-
-        like.setOnClickListener(v -> {
-            SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
-                    .setDirection(Direction.Right)
-                    .setDuration(Duration.Normal.duration)
-                    .setInterpolator(new AccelerateInterpolator())
-                    .build();
-
-            manager.setSwipeAnimationSetting(setting);
-            cardStackView.swipe();
-        });
     }
 
     private void initialize() {
@@ -125,6 +105,7 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
         cardStackView.setAdapter(adapter);
         cardStackView.setItemAnimator(new DefaultItemAnimator());
     }
+
 
     @Override
     public void onCardDragging(Direction direction, float ratio) {
@@ -163,4 +144,15 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
     //GETTING FEMALE
     Query queryFemale = FirestoreUsage.getFemaleUsersCollectionReference().orderBy("name");
     FirestoreRecyclerOptions<User> optionsFemale = new FirestoreRecyclerOptions.Builder<User>().setQuery(queryFemale, User.class).setLifecycleOwner(this).build();
+
+    private void swipeConfiguration(Direction direction) {
+        SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
+                .setDirection(direction)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(new AccelerateInterpolator())
+                .build();
+
+        manager.setSwipeAnimationSetting(setting);
+        cardStackView.swipe();
+    }
 }
