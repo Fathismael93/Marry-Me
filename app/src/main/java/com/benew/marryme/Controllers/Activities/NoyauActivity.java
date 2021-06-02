@@ -1,5 +1,11 @@
 package com.benew.marryme.Controllers.Activities;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.benew.marryme.Bases.BaseActivity;
@@ -7,8 +13,12 @@ import com.benew.marryme.Controllers.Fragments.TchatFragment;
 import com.benew.marryme.Controllers.Fragments.VoirFragment;
 import com.benew.marryme.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
+
+import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 
 public class NoyauActivity extends BaseActivity {
 
@@ -16,6 +26,11 @@ public class NoyauActivity extends BaseActivity {
     private Fragment voirFragment;
 
     @BindView(R.id.activity_main_bottom_navigation) BottomNavigationView bottomNavigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    FirebaseAuth mAuth;
+    FirebaseUser user;
 
     @Override
     protected int getLayout() { return R.layout.activity_noyau; }
@@ -24,6 +39,35 @@ public class NoyauActivity extends BaseActivity {
     protected void configuration() {
         this.configureBottomView();
         this.showTchatFragment();
+
+        setSupportActionBar(toolbar);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        toolbar.setTitle(user.getDisplayName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.logout_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mAuth.signOut();
+                startNewActivity(NoyauActivity.this, MainActivity.class);
+                finish();
+                break;
+        }
+        return true;
     }
 
     private void configureBottomView() {

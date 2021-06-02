@@ -5,12 +5,16 @@ import android.widget.RelativeLayout;
 
 import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
+import com.benew.marryme.FirebaseUsage.FirestoreUsage;
+import com.benew.marryme.Modals.User;
 import com.benew.marryme.R;
+import com.benew.marryme.UTILS.Prevalent;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Arrays;
 
@@ -41,10 +45,8 @@ public class MainActivity extends BaseActivity {
 
         tashie = configureLoading(MainActivity.this);
 
-        if (user != null) {
-            startNewActivity(MainActivity.this, NoyauActivity.class);
-            finish();
-        }
+        if (user != null)
+            getUserData(user);
     }
 
     @OnClick(R.id.login_with_google_button)
@@ -117,10 +119,13 @@ public class MainActivity extends BaseActivity {
 
                 if (response.isNewUser()) {
                     startNewActivity(MainActivity.this, InfoGeneralActivity.class);
-                } else {
-                    startNewActivity(MainActivity.this, NoyauActivity.class);
+                    finish();
                 }
-                finish();
+                else {
+
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    getUserData(user);
+                }
 
             } else { // ERRORS
                 if (response == null) {
@@ -132,5 +137,32 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    private void getUserData(FirebaseUser user) {
+        FirestoreUsage.getFemaleUserDocumentReference(user.getEmail()).get().addOnCompleteListener(task -> {
+
+            DocumentSnapshot documentSnapshot = task.getResult();
+
+            if (documentSnapshot.exists()) {
+                User user1 = documentSnapshot.toObject(User.class);
+                Prevalent.currentUserOnline = user1;
+                startNewActivity(MainActivity.this, NoyauActivity.class);
+                finish();
+            } else {
+
+                FirestoreUsage.getMaleUserDocumentReference(user.getEmail()).get().addOnCompleteListener(task1 -> {
+
+                    DocumentSnapshot document = task1.getResult();
+
+                    if (document.exists()) {
+                        User user2 = document.toObject(User.class);
+                        Prevalent.currentUserOnline = user2;
+                        startNewActivity(MainActivity.this, NoyauActivity.class);
+                        finish();
+                    }
+                });
+            }
+        });
     }
 }

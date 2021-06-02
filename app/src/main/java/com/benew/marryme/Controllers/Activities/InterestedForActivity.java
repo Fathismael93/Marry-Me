@@ -93,7 +93,8 @@ public class InterestedForActivity extends BaseActivity {
         if (uriImageSelected == null) Toasty.info(this, "Vous devez obligatoirement mettre une photo !").show();
         else {
             startLoading(rootView, tashie);
-            saveData(); }
+            saveData();
+        }
     }
 
     private void saveData() {
@@ -110,7 +111,7 @@ public class InterestedForActivity extends BaseActivity {
                 break;
         }
 
-            StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getMail()).child(gender).child("profile_picture.jpg");
+            StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getMail(), gender).child("profile_picture.jpg");
             userProfilePicture.putFile(uriImageSelected).addOnSuccessListener(this, taskSnapshot -> {
                 String pathImageSavedInFirebaseStorage = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
 

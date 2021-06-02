@@ -35,7 +35,7 @@ public class FirestoreUsage {
     }
 
     // ONE USER STORAGE REFERENCE
-    public static StorageReference getUserPictureReference(String userNumber) {
-        return getAllUsersStorageRef().child(userNumber).child("PROFILE PICTURE");
+    public static StorageReference getUserPictureReference(String userMail, String gender) {
+        return getAllUsersStorageRef().child(gender).child(userMail).child("PROFILE PICTURE");
     }
 }

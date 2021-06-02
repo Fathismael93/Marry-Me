@@ -104,6 +104,9 @@ dependencies {
     //SWIPE CARDS
     implementation 'com.yuyakaido.android:card-stack-view:2.3.4'
 
+    // View
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     //DOTS LOADER
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 }
