@@ -4,6 +4,7 @@ import android.widget.RadioGroup;
 
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
+import com.benew.marryme.Receivers.ConnectivityReceiver;
 import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 import static com.benew.marryme.FirebaseUsage.FirestoreUsage.getFemaleUserDocumentReference;
@@ -27,12 +29,14 @@ public class MaritalStatusActivity extends BaseActivity {
 
     String workAnswer = "", workPlace = "", bio = "";
 
+    boolean isConnected;
+
     @Override
     protected int getLayout() { return R.layout.activity_marital_status; }
 
     @Override
     protected void configuration() {
-
+        isConnected = ConnectivityReceiver.isConnected(MaritalStatusActivity.this);
     }
 
     @OnClick(R.id.to_next_button)
@@ -63,13 +67,17 @@ public class MaritalStatusActivity extends BaseActivity {
         Prevalent.currentUserOnline.setWork_answer(workAnswer);
         Prevalent.currentUserOnline.setWork_place(workPlace);
 
-        switch (Prevalent.currentUserOnline.getGender()) {
-            case MALE_GENDER:
-                getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
-                break;
-            case FEMALE_GENDER:
-                getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
-                break;
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            switch (Prevalent.currentUserOnline.getGender()) {
+                case MALE_GENDER:
+                    getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
+                    break;
+                case FEMALE_GENDER:
+                    getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).update(actualPersonalStatusMap).addOnSuccessListener(o -> startNewActivity(MaritalStatusActivity.this, NoyauActivity.class));
+                    break;
+            }
         }
     }
 }

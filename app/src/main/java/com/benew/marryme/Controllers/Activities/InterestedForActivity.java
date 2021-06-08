@@ -10,6 +10,7 @@ import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.FirebaseUsage.FirestoreUsage;
 import com.benew.marryme.R;
+import com.benew.marryme.Receivers.ConnectivityReceiver;
 import com.benew.marryme.UTILS.Prevalent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,14 +55,21 @@ public class InterestedForActivity extends BaseActivity {
     FirebaseUser user;
 
     TashieLoader tashie;
+    boolean isConnected;
 
     @Override
     protected int getLayout() { return R.layout.activity_interested_for; }
 
     @Override
     protected void configuration() {
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        isConnected = ConnectivityReceiver.isConnected(InterestedForActivity.this);
+
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
+        }
 
         tashie = configureLoading(InterestedForActivity.this);
     }
@@ -111,6 +119,9 @@ public class InterestedForActivity extends BaseActivity {
                 break;
         }
 
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
             StorageReference userProfilePicture = FirestoreUsage.getUserPictureReference(Prevalent.currentUserOnline.getMail(), gender).child("profile_picture.jpg");
             userProfilePicture.putFile(uriImageSelected).addOnSuccessListener(this, taskSnapshot -> {
                 String pathImageSavedInFirebaseStorage = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
@@ -127,6 +138,8 @@ public class InterestedForActivity extends BaseActivity {
                         break;
                 }
             });
+        }
+
         stopLoading(rootView, tashie);
     }
 }

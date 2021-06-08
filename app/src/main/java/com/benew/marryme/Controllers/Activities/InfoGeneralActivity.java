@@ -8,6 +8,7 @@ import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.Modals.User;
 import com.benew.marryme.R;
+import com.benew.marryme.Receivers.ConnectivityReceiver;
 import com.benew.marryme.UTILS.Prevalent;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,12 +59,15 @@ public class InfoGeneralActivity extends BaseActivity{
     FirebaseUser user;
 
     TashieLoader tashie;
+    boolean isConnected;
 
     @Override
     protected int getLayout() { return R.layout.activity_info_general; }
 
     @Override
     protected void configuration() {
+        isConnected = ConnectivityReceiver.isConnected(InfoGeneralActivity.this);
+
         calendar = Calendar.getInstance();
         date = (view, year, month, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);
@@ -84,8 +88,12 @@ public class InfoGeneralActivity extends BaseActivity{
 
         countryUserInput.getEditText().setOnClickListener(v -> openPicker());
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
+        }
 
         Prevalent.currentUserOnline = new User();
 
@@ -156,9 +164,15 @@ public class InfoGeneralActivity extends BaseActivity{
         Prevalent.currentUserOnline.setCountry(countryUser);
 
         if (gender.equals(FEMALE_GENDER)) {
-            getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
+            if (!isConnected)
+                Toasty.info(this, "Connexion interrompue ").show();
+            else
+                getFemaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
         } else {
-            getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
+            if (!isConnected)
+                Toasty.info(this, "Connexion interrompue ").show();
+            else
+                getMaleUserDocumentReference(Prevalent.currentUserOnline.getMail()).set(infoGeneralMap).addOnSuccessListener(o -> startNewActivity(InfoGeneralActivity.this, InterestedForActivity.class));
         }
 
         stopLoading(rootView, tashie);

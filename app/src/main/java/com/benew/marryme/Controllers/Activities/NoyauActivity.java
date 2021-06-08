@@ -12,11 +12,13 @@ import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.Controllers.Fragments.TchatFragment;
 import com.benew.marryme.Controllers.Fragments.VoirFragment;
 import com.benew.marryme.R;
+import com.benew.marryme.Receivers.ConnectivityReceiver;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
 
 import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 
@@ -31,19 +33,27 @@ public class NoyauActivity extends BaseActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser user;
+    boolean isConnected;
 
     @Override
     protected int getLayout() { return R.layout.activity_noyau; }
 
     @Override
     protected void configuration() {
+        isConnected = ConnectivityReceiver.isConnected(NoyauActivity.this);
+
         this.configureBottomView();
         this.showTchatFragment();
 
         setSupportActionBar(toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
+        }
+
         toolbar.setTitle(user.getDisplayName());
     }
 
@@ -62,8 +72,12 @@ public class NoyauActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case R.id.logout:
-                mAuth.signOut();
-                startNewActivity(NoyauActivity.this, MainActivity.class);
+                if (!isConnected)
+                    Toasty.info(this, "Connexion interrompue ").show();
+                else {
+                    mAuth.signOut();
+                    startNewActivity(NoyauActivity.this, MainActivity.class);
+                }
                 finish();
                 break;
         }

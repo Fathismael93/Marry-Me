@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
 import com.benew.marryme.Bases.BaseActivity;
 import com.benew.marryme.R;
+import com.benew.marryme.Receivers.ConnectivityReceiver;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -20,7 +21,6 @@ import es.dmoral.toasty.Toasty;
 
 import static com.benew.marryme.API.GetUserDataAPI.getUserData;
 import static com.benew.marryme.API.LoadingConfiguration.configureLoading;
-import static com.benew.marryme.API.LoadingConfiguration.startLoading;
 import static com.benew.marryme.API.StartNewActivityAPI.startNewActivity;
 
 public class MainActivity extends BaseActivity {
@@ -32,33 +32,57 @@ public class MainActivity extends BaseActivity {
 
     TashieLoader tashie;
 
+    FirebaseUser user;
+    boolean isConnected;
+
     @Override
     protected int getLayout() { return R.layout.activity_main; }
 
     @Override
     protected void configuration() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+
+        isConnected = ConnectivityReceiver.isConnected(MainActivity.this);
+
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            user = mAuth.getCurrentUser();
+        }
 
         tashie = configureLoading(MainActivity.this);
 
-        if (user != null)
-            getUserData(this, this, user);
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else {
+            if (user != null)
+                getUserData(this, this, user);
+        }
+
     }
 
     @OnClick(R.id.login_with_google_button)
     void onClickLoginWithGoogle() {
-        this.startSignInWithGoogle();
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else
+            this.startSignInWithGoogle();
     }
 
     @OnClick(R.id.login_with_facebook_button)
     void onClickLoginWithFacebook() {
-        this.startSignInActivity();
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else
+            this.startSignInActivity();
     }
 
     @OnClick(R.id.login_with_mail_button)
     void onClickLoginWithMail() {
-        this.startSignInWithMail();
+        if (!isConnected)
+            Toasty.info(this, "Connexion interrompue ").show();
+        else
+            this.startSignInWithMail();
     }
 
     @Override
@@ -112,16 +136,22 @@ public class MainActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
 
-                startLoading(rootView, tashie);
-
                 if (response.isNewUser()) {
-                    startNewActivity(MainActivity.this, InfoGeneralActivity.class);
+
+                    if (!isConnected)
+                        Toasty.info(this, "Connexion interrompue ").show();
+                    else
+                        startNewActivity(MainActivity.this, InfoGeneralActivity.class);
+
                     finish();
                 }
                 else {
-
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    getUserData(this, this, user);
+                    if (!isConnected)
+                        Toasty.info(this, "Connexion interrompue ").show();
+                    else {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        getUserData(this, this, user);
+                    }
                 }
 
             } else { // ERRORS
