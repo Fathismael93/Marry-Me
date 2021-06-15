@@ -1,10 +1,13 @@
 package com.benew.marryme.Controllers.Fragments;
 
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import com.benew.marryme.Adapters.UsersAdapter;
@@ -15,6 +18,8 @@ import com.benew.marryme.R;
 import com.benew.marryme.UTILS.Prevalent;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.Query;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
@@ -28,10 +33,13 @@ import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
 import butterknife.BindView;
 
+import static com.benew.marryme.Adapters.UsersAdapter.registerLikeFromAdapater;
+import static com.benew.marryme.Adapters.UsersAdapter.registerSwipeFromAdapater;
 import static com.benew.marryme.UTILS.Constants.MALE_GENDER;
 
 public class VoirFragment extends BaseFragment implements CardStackListener {
 
+    @BindView(R.id.rootView) CoordinatorLayout rootView;
     @BindView(R.id.card_stack_view) CardStackView cardStackView;
     @BindView(R.id.skip_button) FloatingActionButton skip;
     @BindView(R.id.rewind_button) FloatingActionButton rewind;
@@ -59,12 +67,26 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
     private void configureUsersAdapter() {
         manager = new CardStackLayoutManager(getContext(), this);
 
+        Snackbar snackbar = configureSnackbar();
+
         if (Prevalent.currentUserOnline.getGender().equals(MALE_GENDER))
-            adapter = new UsersAdapter(optionsFemale, getContext());
+            adapter = new UsersAdapter(optionsFemale, getContext(), Prevalent.currentUserOnline, snackbar);
         else
-            adapter = new UsersAdapter(optionsMale, getContext());
+            adapter = new UsersAdapter(optionsMale, getContext(), Prevalent.currentUserOnline, snackbar);
 
         adapter.notifyDataSetChanged();
+    }
+
+    private Snackbar configureSnackbar() {
+        Snackbar snackbar = Snackbar.make(rootView, "VICE-VERSA", BaseTransientBottomBar.LENGTH_SHORT)
+                .setBackgroundTint(Color.BLACK).setTextColor(getResources().getColor(R.color.purple_200));
+
+        View view = snackbar.getView();
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        view.setLayoutParams(params);
+
+        return snackbar;
     }
 
 
@@ -114,7 +136,7 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
 
     @Override
     public void onCardSwiped(Direction direction) {
-
+        isLeftOrRight(direction);
     }
 
     @Override
@@ -154,5 +176,16 @@ public class VoirFragment extends BaseFragment implements CardStackListener {
 
         manager.setSwipeAnimationSetting(setting);
         cardStackView.swipe();
+    }
+
+    private void isLeftOrRight(Direction direction) {
+        switch (direction) {
+            case Right:
+                registerLikeFromAdapater(Prevalent.currentUserOnline);
+                break;
+            case Left:
+                registerSwipeFromAdapater(Prevalent.currentUserOnline);
+                break;
+        }
     }
 }
